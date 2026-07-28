@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>🔮 AI算命 - 你的命中注定之人</title>
+  <meta name="description" content="AI八字算命，解读你的性格与情感运势，测试一下你的正缘在哪里？">
+  <meta property="og:title" content="🔮 AI算命 - 你的命中注定之人">
+  <meta property="og:description" content="AI八字算命，解读你的性格与情感运势">
+  <meta property="og:type" content="website">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #1a1a4e 100%);
+      min-height: 100vh;
+      color: #e8d5b7;
+      overflow-x: hidden;
+    }
+
+    /* 流星背景 */
+    .stars {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .star {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: fall linear infinite;
+      opacity: 0.6;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-10px) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* 封面 */
+    .hero {
+      text-align: center;
+      padding: 60px 0 40px;
+    }
+    .hero-emoji {
+      font-size: 72px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    .hero-title {
+      font-size: 28px;
+      font-weight: bold;
+      margin-top: 16px;
+      background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.3;
+    }
+    .hero-sub {
+      font-size: 14px;
+      color: rgba(232,213,183,0.6);
+      margin-top: 12px;
+    }
+    .hero-divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(to right, #fbbf24, #f59e0b);
+      margin: 20px auto;
+      border-radius: 2px;
+    }
+
+    /* 八卦动画 */
+    .bagua-container {
+      display: flex;
+      justify-content: center;
+      margin: 24px 0;
+    }
+    .bagua {
+      width: 120px; height: 120px;
+      position: relative;
+      animation: spin 20s linear infinite;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .bagua::before {
+      content: '☯';
+      font-size: 100px;
+      line-height: 120px;
+      text-align: center;
+      display: block;
+      color: #fbbf24;
+      text-shadow: 0 0 30px rgba(251,191,36,0.5);
+    }
+
+    /* 示例结果卡片 */
+    .example-section {
+      padding: 20px 0;
+    }
+    .example-title {
+      text-align: center;
+      font-size: 16px;
+      color: rgba(232,213,183,0.7);
+      margin-bottom: 16px;
+    }
+    .example-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(251,191,36,0.2);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 12px;
+      backdrop-filter: blur(10px);
+    }
+    .example-name {
+      font-size: 14px;
+      color: rgba(232,213,183,0.5);
+      margin-bottom: 8px;
+    }
+    .example-bazi {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .example-pillar {
+      text-align: center;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      padding: 8px 4px;
+    }
+    .example-pillar-label {
+      font-size: 10px;
+      color: rgba(232,213,183,0.4);
+    }
+    .example-pillar-val {
+      font-size: 16px;
+      font-weight: bold;
+      color: #fbbf24;
+      margin-top: 2px;
+    }
+    .example-text {
+      font-size: 13px;
+      color: rgba(232,213,183,0.85);
+      line-height: 1.8;
+    }
+    .example-tag {
+      display: inline-block;
+      background: rgba(251,191,36,0.15);
+      color: #fbbf24;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-top: 10px;
+    }
+
+    /* 功能介绍 */
+    .features {
+      padding: 20px 0;
+    }
+    .features-title {
+      text-align: center;
+      font-size: 18px;
+      color: #fbbf24;
+      margin-bottom: 20px;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .feature-item {
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .feature-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+    .feature-name {
+      font-size: 14px;
+      color: #fbbf24;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    .feature-desc {
+      font-size: 11px;
+      color: rgba(232,213,183,0.5);
+    }
+
+    /* 价格卡 */
+    .price-section {
+      padding: 20px 0;
+    }
+    .price-card {
+      background: linear-gradient(135deg, rgba(139,92,246,0.3), rgba(251,191,36,0.2));
+      border: 1px solid rgba(139,92,246,0.4);
+      border-radius: 20px;
+      padding: 24px;
+      text-align: center;
+    }
+    .price-badge {
+      display: inline-block;
+      background: rgba(251,191,36,0.2);
+      color: #fbbf24;
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .price-amount {
+      font-size: 48px;
+      font-weight: bold;
+      color: #fbbf24;
+    }
+    .price-amount small {
+      font-size: 18px;
+    }
+    .price-desc {
+      font-size: 12px;
+      color: rgba(232,213,183,0.6);
+      margin-top: 8px;
+    }
+    .price-features {
+      text-align: left;
+      margin: 16px auto;
+      max-width: 220px;
+    }
+    .price-feature {
+      font-size: 13px;
+      color: rgba(232,213,183,0.8);
+      padding: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* CTA 按钮 */
+    .cta-section {
+      padding: 20px 0 40px;
+      text-align: center;
+    }
+    .cta-btn {
+      display: inline-block;
+      width: 100%;
+      max-width: 320px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 16px 32px;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(245,158,11,0.4);
+      animation: cta-pulse 2s ease-in-out infinite;
+    }
+    @keyframes cta-pulse {
+      0%, 100% { box-shadow: 0 4px 20px rgba(245,158,11,0.4); }
+      50% { box-shadow: 0 4px 30px rgba(245,158,11,0.7); }
+    }
+    .cta-note {
+      font-size: 11px;
+      color: rgba(232,213,183,0.4);
+      margin-top: 12px;
+    }
+
+    /* 底部 */
+    .footer {
+      text-align: center;
+      padding: 20px 0 40px;
+      font-size: 11px;
+      color: rgba(232,213,183,0.3);
+    }
+    .footer-qr {
+      margin: 16px auto;
+      width: 100px; height: 100px;
+      background: white;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #999;
+    }
+    .footer-qr img {
+      width: 100%; height: 100%;
+      border-radius: 8px;
+    }
+
+    /* 分享提示 */
+    .share-tip {
+      text-align: center;
+      padding: 12px 0;
+      font-size: 12px;
+      color: rgba(232,213,183,0.5);
+    }
+
+    /* 微信环境提示 */
+    .wx-tip {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.9);
+      color: white;
+      text-align: center;
+      padding: 16px;
+      font-size: 13px;
+      z-index: 100;
+    }
+    @media (min-width: 481px) {
+      .wx-tip { display: none !important; }
+    }
+
+    /* 复制链接 */
+    .copy-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(251,191,36,0.3);
+      color: #fbbf24;
+      font-size: 13px;
+      padding: 8px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+    .copy-btn:active { background: rgba(255,255,255,0.2); }
+  </style>
+</head>
+<body>
+
+<!-- 流星背景 -->
+<div class="stars" id="stars"></div>
+
+<div class="container">
+
+  <!-- 封面 -->
+  <div class="hero">
+    <div class="hero-emoji">🔮</div>
+    <div class="hero-title">AI 命理师<br>你的命中注定之人</div>
+    <div class="hero-divider"></div>
+    <div class="hero-sub">AI 八字 · 情感分析 · 性格解读<br>输入生日，3秒生成你的命盘</div>
+    <div class="bagua-container">
+      <div class="bagua"></div>
+    </div>
+  </div>
+
+  <!-- 示例结果 -->
+  <div class="example-section">
+    <div class="example-title">—— 他们都在测 ——</div>
+    
+    <div class="example-card">
+      <div class="example-name">@小林 · 1995年1月</div>
+      <div class="example-bazi">
+        <div class="example-pillar"><div class="example-pillar-label">年柱</div><div class="example-pillar-val">甲戌</div></div>
+        <div class="example-pillar"><div class="example-pillar-label">月柱</div><div class="example-pillar-val">癸丑</div></div>
+        <div class="example-pillar"><div class="example-pillar-label">日柱</div><div class="example-pillar-val">丙申</div></div>
+        <div class="example-pillar"><div class="example-pillar-label">时柱</div><div class="example-pillar-val">甲午</div></div>
+      </div>
+      <div class="example-text">
+        🌟 性格：正直仁慈，内心温暖但不善表达<br>
+        💕 感情：近期桃花运不错，适合主动出击<br>
+        ✨ 建议：多倾听，少冲动
+      </div>
+      <div class="example-tag">已帮助 2,847 人</div>
+    </div>
+
+    <div class="example-card">
+      <div class="example-name">@阿雅 · 1998年5月</div>
+      <div class="example-bazi">
+        <div class="example-pillar"><div class="example-pillar-label">年柱</div><div class="example-pillar-val">戊寅</div></div>
+        <div class="example-pillar"><div class="example-pillar-label">月柱</div><div class="example-pillar-val">丁巳</div></div>
+        <div class="example-pillar"><div class="example-pillar-label">日柱</div><div class="example-pillar-val">壬子</div></div>
+        <div class="example-pillar"><div class="example-pillar-label">时柱</div><div class="example-pillar-val">丙午</div></div>
+      </div>
+      <div class="example-text">
+        🌟 性格：豁达智慧，思维开阔，富有哲思<br>
+        💕 感情：有缘分会自然出现，保持初心<br>
+        ✨ 建议：顺其自然，好事将至
+      </div>
+      <div class="example-tag">已帮助 1,532 人</div>
+    </div>
+  </div>
+
+  <!-- 功能 -->
+  <div class="features">
+    <div class="features-title">✨ 我能帮你做什么</div>
+    <div class="feature-grid">
+      <div class="feature-item">
+        <div class="feature-icon">🧙</div>
+        <div class="feature-name">八字命盘</div>
+        <div class="feature-desc">精准排盘，分析五行</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">💕</div>
+        <div class="feature-name">情感分析</div>
+        <div class="feature-desc">桃花运势，感情走向</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🌟</div>
+        <div class="feature-name">性格解读</div>
+        <div class="feature-desc">深度了解自己</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📅</div>
+        <div class="feature-name">流年预测</div>
+        <div class="feature-desc">近期运势提醒</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 价格 -->
+  <div class="price-section">
+    <div class="price-card">
+      <div class="price-badge">🎁 限时优惠</div>
+      <div class="price-amount"><small>¥</small>9.9</div>
+      <div class="price-desc">完整详细版 · 永久有效</div>
+      <div class="price-features">
+        <div class="price-feature">✅ <span>十年大运分析</span></div>
+        <div class="price-feature">✅ <span>详细流年预测</div>
+        <div class="price-feature">✅ <span>事业财运指导</span></div>
+        <div class="price-feature">✅ <span>婚恋感情建议</span></div>
+        <div class="price-feature">✅ <span>专属改运建议</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <a href="./index.html" class="cta-btn">🚀 免费测一测我的命盘</a>
+    <div class="cta-note">点击即测 · 完全免费 · 30秒出结果</div>
+    <button class="copy-btn" onclick="copyLink()">📋 复制链接分享给朋友</button>
+  </div>
+
+  <!-- 二维码 -->
+  <div style="text-align:center; padding: 10px 0;">
+    <div style="font-size:12px; color:rgba(232,213,183,0.5); margin-bottom:10px;">扫码访问</div>
+    <div style="display:inline-block; background:white; border-radius:8px; padding:4px;">
+      <img src="skm.jpg" alt="二维码" style="width:100px;height:100px;display:block;" 
+           onerror="this.parentElement.innerHTML='<div style=\'width:100px;height:100px;display:flex;align-items:center;justify-content:center;color:#999;font-size:10px;\'>图片失效<br>请复制链接</div>'">
+    </div>
+  </div>
+
+  <!-- 分享提示 -->
+  <div class="share-tip">🔗 分享到小红书/朋友圈/群聊 效果更好</div>
+
+  <div class="footer">
+    <div>仅供娱乐参考 · 命运掌握在自己手中</div>
+    <div style="margin-top:6px;">🔮 AI命理师 · 情感运势分析</div>
+  </div>
+</div>
+
+<!-- 微信提示 -->
+<div class="wx-tip" id="wxTip">
+  👆 点击右上角 · 选择「在浏览器打开」<br>或复制链接到浏览器访问
+</div>
+
+<script>
+// 生成流星
+const stars = document.getElementById('stars');
+for (let i = 0; i < 30; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  s.style.left = Math.random() * 100 + '%';
+  s.style.animationDuration = (3 + Math.random() * 5) + 's';
+  s.style.animationDelay = Math.random() * 5 + 's';
+  s.style.width = s.style.height = (1 + Math.random() * 2) + 'px';
+  stars.appendChild(s);
+}
+
+// 微信环境检测
+if (/MicroMessenger/.test(navigator.userAgent)) {
+  document.getElementById('wxTip').style.display = 'block';
+}
+
+// 复制链接
+function copyLink() {
+  const url = 'https://ij999.pages.dev/';
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = '✅ 已复制！快去分享';
+      setTimeout(() => btn.textContent = '📋 复制链接分享给朋友', 2000);
+    });
+  } else {
+    prompt('复制以下链接分享:', url);
+  }
+}
+
+// 页面标题动画
+document.addEventListener('visibilitychange', function() {
+  if (document.hidden) {
+    document.title = '🔮 你的朋友给你发了一个命盘测算';
+  } else {
+    document.title = '🔮 AI算命 - 你的命中注定之人';
+  }
+});
+</script>
+
+</body>
+</html>

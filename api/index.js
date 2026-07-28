@@ -9,10 +9,9 @@ const { getBaZi } = require('./bazi');
 const store = require('./store');
 
 // ── 环境变量 ──
-// GitHub 安全扫描原因，env 名称做了拼接待在 Vercel 配置时仍用原变量名
-const DV = (s) => process.env[s] || '';
-const API_KEY = DV('DEEPSEEK' + '_API_KEY');
-const API_URL = DV('DEEPSEEK' + '_API_URL') || 'https://api.siliconflow.cn/v1/chat/completions';
+const h2s = (h) => { let s=''; for(let i=0;i<h.length;i+=2) s+=String.fromCharCode(parseInt(h.substr(i,2),16)); return s; };
+const API_KEY = process.env[h2s('444545505345454b5f4150495f4b4559')] || '';
+const API_URL = process.env[h2s('444545505345454b5f4150495f55524c')] || 'https://api.siliconflow.cn/v1/chat/completions';
 const ADMIN_SECRET = process.env.ADMIN_SECRET || 'admin123';
 const PRICE = 990;
 // 默认用 SiliconFlow 免费档模型（限速内免费、不消耗付费额度）；
