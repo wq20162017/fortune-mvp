@@ -1,0 +1,3 @@
+# 排除早期方案的遗留目录，Vercel 只部署根目录的静态版 + api/
+frontend/
+backend/
