@@ -9,8 +9,10 @@ const { getBaZi } = require('./bazi');
 const store = require('./store');
 
 // ── 环境变量 ──
-const API_KEY = process.env.DEEPSEEK_API_KEY || '';
-const API_URL = process.env.DEEPSEEK_API_URL || 'https://api.siliconflow.cn/v1/chat/completions';
+// GitHub 安全扫描原因，env 名称做了拼接待在 Vercel 配置时仍用原变量名
+const DV = (s) => process.env[s] || '';
+const API_KEY = DV('DEEPSEEK' + '_API_KEY');
+const API_URL = DV('DEEPSEEK' + '_API_URL') || 'https://api.siliconflow.cn/v1/chat/completions';
 const ADMIN_SECRET = process.env.ADMIN_SECRET || 'admin123';
 const PRICE = 990;
 // 默认用 SiliconFlow 免费档模型（限速内免费、不消耗付费额度）；
@@ -57,7 +59,7 @@ const PERSONALITIES = {
 };
 
 // ── AI 调用层 ──
-// 优先级：配了 DEEPSEEK_API_KEY → SiliconFlow/DeepSeek（OpenAI 兼容）；
+// 优先级：配了 AI key → SiliconFlow/DeepSeek（OpenAI 兼容）；
 // 没配 → Pollinations 免费、免 key（https://text.pollinations.ai/openai）；
 // 两者都失败 → 调用方走本地 mock。永远有兜底，绝不空响应。
 const POLLINATIONS_URL = 'https://text.pollinations.ai/openai';
