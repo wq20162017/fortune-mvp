@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>订单管理 - AI命理师</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{background:#0f0c29;color:#e8d5b7;font-family:'PingFang SC','Microsoft YaHei',sans-serif;min-height:100vh}
+.glass{background:rgba(255,255,255,.05);backdrop-filter:blur(10px);border:1px solid rgba(251,191,36,.2)}
+</style>
+</head>
+<body class="p-4">
+<div class="max-w-2xl mx-auto">
+<div class="text-center mb-8">
+<h1 class="text-3xl font-bold text-amber-200 mb-2">🔮 订单管理</h1>
+<p class="text-amber-100/50 text-sm">AI命理师 · 手动支付验证</p>
+</div>
+
+<div id="loginBox" class="glass rounded-2xl p-6 max-w-sm mx-auto">
+<div class="text-amber-200 font-bold mb-4 text-center">管理员验证</div>
+<input id="secretKey" type="password" placeholder="输入管理密钥" class="w-full bg-white/10 border border-amber-500/30 rounded-lg px-4 py-2.5 text-white placeholder-white/30 outline-none mb-3">
+<button onclick="login()" class="w-full bg-gradient-to-r from-amber-600 to-amber-500 text-white font-bold py-3 rounded-xl">🔑 登录</button>
+<p id="loginErr" class="text-red-400 text-sm mt-2 text-center hidden">密钥错误</p>
+</div>
+
+<div id="mainBox" class="hidden">
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-xl text-amber-200 font-bold">📋 订单列表</h2>
+<div class="flex gap-2">
+<button onclick="refreshOrders()" class="bg-amber-600/30 border border-amber-500/40 text-amber-200 px-4 py-2 rounded-lg text-sm">🔄 刷新</button>
+<button onclick="logout()" class="bg-red-600/30 border border-red-500/40 text-red-200 px-4 py-2 rounded-lg text-sm">退出</button>
+</div>
+</div>
+
+<div id="stats" class="grid grid-cols-3 gap-3 mb-6"></div>
+<div id="orderList" class="space-y-3"></div>
+</div>
+</div>
+
+<script>
+var API_BASE = '/api';
+var secret = '';
+
+function login(){
+  secret = document.getElementById('secretKey').value;
+  refreshOrders();
+}
+
+async function refreshOrders(){
+  if(!secret){document.getElementById('loginErr').classList.remove('hidden');return}
+  document.getElementById('loginErr').classList.add('hidden');
+  try{
+    var r = await fetch(API_BASE+'/admin/orders?secret='+encodeURIComponent(secret));
+    if(r.status===403){alert('密钥错误');return}
+    var data = await r.json();
+    document.getElementById('loginBox').classList.add('hidden');
+    document.getElementById('mainBox').classList.remove('hidden');
+    renderOrders(data.orders);
+  }catch(e){alert('加载失败：'+e.message)}
+}
+
+function renderOrders(orders){
+  var list = document.getElementById('orderList');
+  if(!orders || Object.keys(orders).length===0){
+    list.innerHTML = '<div class="text-center text-amber-100/30 py-8">暂无订单</div>';
+    return;
+  }
+  var arr = Object.values(orders).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+  var stats = {paid:0,pending:0,total:arr.length,revenue:0};
+  list.innerHTML = arr.map(function(o){
+    if(o.status==='paid'){stats.paid++;stats.revenue+=o.amount}
+    else stats.pending++;
+    var time = new Date(o.createdAt).toLocaleString();
+    var badge = o.status==='paid'
+      ? '<span class="bg-green-500/20 text-green-300 px-2 py-1 rounded text-xs">✅ 已支付</span>'
+      : '<span class="bg-yellow-500/20 text-yellow-300 px-2 py-1 rounded text-xs">⏳ 待支付</span>';
+    var actions = o.status==='pending'
+      ? '<button onclick="verifyOrder(\''+o.orderId+'\')" class="bg-green-600 hover:bg-green-500 text-white px-4 py-1.5 rounded-lg text-sm transition">✅ 确认付款</button>'
+      : '<span class="text-green-300/50 text-sm">'+new Date(o.paidAt).toLocaleString()+'</span>';
+    return '<div class="glass rounded-xl p-4"><div class="flex justify-between items-start mb-2"><div><div class="text-amber-200 font-bold">'+o.name+'</div><div class="text-amber-100/40 text-xs mt-1">'+time+'</div></div><div>'+badge+'</div></div><div class="flex justify-between items-center"><div class="text-amber-100/60 text-sm">'+o.year+'/'+o.month+'/'+o.day+' · ¥'+(o.amount/100).toFixed(2)+' · <span class="text-amber-100/30 text-xs">'+o.orderId+'</span></div>'+actions+'</div></div>';
+  }).join('');
+
+  document.getElementById('stats').innerHTML =
+    '<div class="glass rounded-xl p-3 text-center"><div class="text-2xl font-bold text-amber-200">'+stats.total+'</div><div class="text-xs text-amber-100/40">总订单</div></div>'+
+    '<div class="glass rounded-xl p-3 text-center"><div class="text-2xl font-bold text-green-300">'+stats.paid+'</div><div class="text-xs text-amber-100/40">已支付</div></div>'+
+    '<div class="glass rounded-xl p-3 text-center"><div class="text-2xl font-bold text-amber-200">¥'+(stats.revenue/100).toFixed(0)+'</div><div class="text-xs text-amber-100/40">累计收入</div></div>';
+}
+
+async function verifyOrder(orderId){
+  if(!confirm('确认该订单已付款？'))return;
+  try{
+    var r = await fetch(API_BASE+'/order/manual-verify/'+orderId,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({secret:secret})
+    });
+    if(r.ok){refreshOrders()}else{alert('验证失败')}
+  }catch(e){alert('操作失败：'+e.message)}
+}
+
+function logout(){
+  secret='';
+  document.getElementById('loginBox').classList.remove('hidden');
+  document.getElementById('mainBox').classList.add('hidden');
+}
+</script>
+</body>
+</html>
