@@ -215,7 +215,7 @@ module.exports = async function handler(req, res) {
       const order = await store.getOrder(params.orderId);
       if (!order) return json(res, { error: '订单不存在' }, 404);
       if (order.status === 'paid') return json(res, { status: 'paid', message: '订单已支付' });
-      return json(res, { status: 'pending', message: '手动验证模式：付款后请联系客服确认' });
+      return json(res, { status: 'pending', message: '付款后请联系客服并提供订单号，客服确认后刷新页面即可解锁完整报告' });
     }
 
     // ---- POST /api/order/manual-verify/:orderId ----
@@ -270,3 +270,4 @@ module.exports = async function handler(req, res) {
     return json(res, { error: err.message || '服务器内部错误' }, 500);
   }
 };
+

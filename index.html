@@ -167,8 +167,9 @@ body{background:linear-gradient(135deg,#0f0c29,#302b63 50%,#24243e);min-height:1
 <!-- 验证失败 -->
 <div id="payFailed" class="hidden glass rounded-2xl p-6 max-w-sm mx-4 text-center">
 <div class="text-3xl mb-3">😔</div>
-<div class="text-amber-200 font-bold text-lg mb-2">暂未检测到付款</div>
-<p class="text-amber-100/60 text-sm mb-4" id="payFailedMsg">请确认是否已完成微信支付，或稍后再试</p>
+<div class="text-amber-200 font-bold text-lg mb-2">等待客服确认</div>
+<p class="text-amber-100/60 text-sm mb-2" id="payFailedMsg">付款后请联系客服确认，确认后点下方按钮即可查看完整报告</p>
+<p class="text-amber-300 text-xs mb-4" id="payFailedContact"></p>
 <button onclick="checkPaymentAgain()" class="w-full bg-gradient-to-r from-amber-600 to-amber-500 text-white font-bold py-3 rounded-xl transition mb-3">🔄 重新检查</button>
 <button onclick="document.getElementById('paymentModal').classList.add('hidden')" class="text-amber-100/40 hover:text-amber-200 text-sm">返回</button>
 </div>
@@ -181,6 +182,10 @@ body{background:linear-gradient(135deg,#0f0c29,#302b63 50%,#24243e);min-height:1
 <div class="mt-8 text-amber-100/20 text-xs text-center">仅供娱乐参考 · 命运掌握在自己手中</div>
 
 <script>
+// ============ 客服联系方式 ============
+// 改这里替换你的微信号
+var CONTACT_WX = '';
+
 // ============ 配置 ============
 // 后端地址：本地开发用 '/api'，部署到 Vercel 后改为后端服务器完整地址
 // 例如：var API_BASE = 'https://your-server.com/api';
@@ -382,14 +387,28 @@ async function verifyAndShowReport(){
     // 未成功，开始轮询
     document.getElementById('payVerifying').classList.add('hidden');
     document.getElementById('payFailed').classList.remove('hidden');
-    document.getElementById('payFailedMsg').textContent=vd.message||'请确认是否已完成微信支付，或稍后再试';
+    updateContact();
+    document.getElementById('payFailedMsg').textContent=vd.message||'付款后请联系客服确认，确认后点下方按钮即可查看完整报告';
 
     // 自动轮询30秒
     startPolling();
   }catch(e){
     document.getElementById('payVerifying').classList.add('hidden');
     document.getElementById('payFailed').classList.remove('hidden');
-    document.getElementById('payFailedMsg').textContent='网络错误，请检查网络后重试';
+    updateContact();
+    document.getElementById('payFailedMsg').textContent='网络异常，请检查网络后重新点击“我已完成付款”';
+  }
+}
+
+// 更新客服联系方式
+function updateContact(){
+  var el = document.getElementById('payFailedContact');
+  if(el){
+    if(CONTACT_WX){
+      el.innerHTML = '💬 客服微信：<span class="text-amber-200 font-bold">'+CONTACT_WX+'</span>';
+    } else {
+      el.innerHTML = '💬 付款后联系客服确认（客服微信待补充）';
+    }
   }
 }
 
@@ -603,3 +622,4 @@ window.addEventListener('load',function(){
 
 </body>
 </html>
+
