@@ -43,12 +43,12 @@ function readBody(req) {
   });
 }
 
-// ── AI 解读 ──
+// ── 性格类型描述 ──
 const PERSONALITIES = {
   '甲': '正直仁慈，有领导力，内心温暖但不善表达',
   '乙': '温柔细腻，敏感体贴，善于照顾他人感受',
   '丙': '热情开朗，阳光外向，行动力强但有时急躁',
-  '丁': '内敛深情，第六感强，直觉敏锐且富有创意',
+  '丁': '内敛深情，洞察力强，直觉敏锐且富有创意',
   '戊': '稳重踏实，诚实守信，重视承诺和安全感',
   '己': '细腻务实，脚踏实地，适应力强且善解人意',
   '庚': '果断坚韧，讲究原则，正义感强但略显固执',
@@ -108,18 +108,18 @@ async function callLLM(messages, maxTokens = 400) {
 }
 
 async function askAI(bazi, userName) {
-  const prompt = `你是有20年经验的命理师。用户${userName || '匿名'}。八字：年${bazi.year.stem}${bazi.year.branch} 月${bazi.month.stem}${bazi.month.branch} 日${bazi.day.stem}${bazi.day.branch} 时${bazi.hour.stem}${bazi.hour.branch}，五行${JSON.stringify(bazi.wuxing)}。分析：1.性格（30字）2.近期情感（60字）3.建议（20字）。语气温暖睿智，用简体中文。`;
+  const prompt = `你是一位资深的性格分析师，擅长基于传统文化框架分析人的性格特质。用户${userName || '匿名'}。根据出生信息分析：1.性格特点（30字）2.情感模式（60字）3.成长建议（20字）。语气温暖睿智，用简体中文。`;
   const content = await callLLM([{ role: 'user', content: prompt }]);
   return content || generateMockResult(bazi, userName);
 }
 
 async function askAIDetail(bazi, userName, section) {
   const prompts = {
-    career: `你是资深命理师。根据${userName}的八字（日主${bazi.day.stem}，五行${JSON.stringify(bazi.wuxing)}），150字内分析事业运势，简体中文。`,
-    wealth: `你是资深命理师。根据${userName}的八字（日主${bazi.day.stem}，五行${JSON.stringify(bazi.wuxing)}），120字内分析财运，简体中文。`,
-    love: `你是资深命理师。根据${userName}的八字（日主${bazi.day.stem}，五行${JSON.stringify(bazi.wuxing)}），120字内分析感情运势，简体中文。`,
-    health: `你是资深命理师。根据${userName}的八字（日主${bazi.day.stem}，五行${JSON.stringify(bazi.wuxing)}），100字内给出健康建议，简体中文。`,
-    overall: `你是资深命理师。根据${userName}的八字（日主${bazi.day.stem}，五行${JSON.stringify(bazi.wuxing)}），80字内总结命理要点，简体中文。`,
+    career: `你是一位职业发展分析师。根据${userName}的性格特质，150字内分析职业发展方向和建议，简体中文。`,
+    wealth: `你是一位个人发展顾问。根据${userName}的性格特质，120字内分析个人成长和财富积累方面的建议，简体中文。`,
+    love: `你是一位情感关系分析师。根据${userName}的性格特质，120字内分析情感模式和关系建议，简体中文。`,
+    health: `你是一位健康生活顾问。根据${userName}的性格特质，100字内给出健康生活建议，简体中文。`,
+    overall: `你是一位性格分析师。根据${userName}的性格特质，80字内总结性格核心要点，简体中文。`,
   };
   const prompt = prompts[section];
   if (!prompt) return null;
@@ -131,11 +131,11 @@ function generateMockResult(bazi, userName) {
   const stem = bazi.day.stem;
   const name = userName || '你';
   const personality = PERSONALITIES[stem] || '性格独特，富有魅力';
-  const love = ['甲','丙','戊'].includes(stem) ? '近期桃花运不错，容易遇到有缘人，适合主动出击'
-    : ['乙','丁','癸'].includes(stem) ? '近期感情运势平缓，适合沉淀自我，有缘分会自然出现'
-    : '近期适合多参加社交活动，扩展圈子，机会在人际交往中';
+  const love = ['甲','丙','戊'].includes(stem) ? '在感情中倾向于主动表达，容易吸引志同道合的伴侣，建议在关系中保持耐心'
+    : ['乙','丁','癸'].includes(stem) ? '情感细腻深沉，适合慢慢了解再建立关系，真挚的感情会自然到来'
+    : '适合多参与社交活动，拓展人际圈，机会往往出现在自然交往中';
   const advice = ['甲','庚'].includes(stem) ? '多倾听，少冲动' : '保持初心，顺其自然';
-  return `【${name}的命理分析】\n\n🌟 性格特点：\n${personality}\n\n💕 近期情感运势：\n${love}\n\n✨ 命理建议：\n${advice}\n\n—— 以上为免费基础版 · 付费解锁详细分析 ——`;
+  return `【${name}的性格分析】\n\n🌟 性格特点：\n${personality}\n\n💕 情感模式：\n${love}\n\n✨ 成长建议：\n${advice}\n\n—— 以上为免费基础版 · 解锁查看完整分析 ——`;
 }
 
 // ── 路由匹配 ──
@@ -270,4 +270,3 @@ module.exports = async function handler(req, res) {
     return json(res, { error: err.message || '服务器内部错误' }, 500);
   }
 };
-

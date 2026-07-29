@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>🔮 AI算命 - 你的命中注定之人</title>
-  <meta name="description" content="AI八字算命，解读你的性格与情感运势，测试一下你的正缘在哪里？">
-  <meta property="og:title" content="🔮 AI算命 - 你的命中注定之人">
-  <meta property="og:description" content="AI八字算命，解读你的性格与情感运势">
+  <title>🧠 AI性格分析 | 深度自我认知</title>
+  <meta name="description" content="AI智能性格分析，基于出生日期深度解读你的性格特质、情感模式和职业发展方向。">
+  <meta property="og:title" content="🧠 AI性格分析 | 深度自我认知">
+  <meta property="og:description" content="AI智能性格分析，解读你的性格特质与情感模式">
   <meta property="og:type" content="website">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -18,7 +18,7 @@
       overflow-x: hidden;
     }
 
-    /* 流星背景 */
+    /* 星空背景 */
     .stars {
       position: fixed;
       top: 0; left: 0;
@@ -84,13 +84,13 @@
       border-radius: 2px;
     }
 
-    /* 八卦动画 */
-    .bagua-container {
+    /* 性格元素动画 */
+    .element-container {
       display: flex;
       justify-content: center;
       margin: 24px 0;
     }
-    .bagua {
+    .element-ring {
       width: 120px; height: 120px;
       position: relative;
       animation: spin 20s linear infinite;
@@ -99,14 +99,13 @@
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
-    .bagua::before {
-      content: '☯';
-      font-size: 100px;
+    .element-ring::before {
+      content: '🧠';
+      font-size: 80px;
       line-height: 120px;
       text-align: center;
       display: block;
-      color: #fbbf24;
-      text-shadow: 0 0 30px rgba(251,191,36,0.5);
+      filter: drop-shadow(0 0 30px rgba(251,191,36,0.3));
     }
 
     /* 示例结果卡片 */
@@ -131,28 +130,6 @@
       font-size: 14px;
       color: rgba(232,213,183,0.5);
       margin-bottom: 8px;
-    }
-    .example-bazi {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    .example-pillar {
-      text-align: center;
-      background: rgba(255,255,255,0.05);
-      border-radius: 8px;
-      padding: 8px 4px;
-    }
-    .example-pillar-label {
-      font-size: 10px;
-      color: rgba(232,213,183,0.4);
-    }
-    .example-pillar-val {
-      font-size: 16px;
-      font-weight: bold;
-      color: #fbbf24;
-      margin-top: 2px;
     }
     .example-text {
       font-size: 13px;
@@ -288,21 +265,6 @@
       font-size: 11px;
       color: rgba(232,213,183,0.3);
     }
-    .footer-qr {
-      margin: 16px auto;
-      width: 100px; height: 100px;
-      background: white;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      color: #999;
-    }
-    .footer-qr img {
-      width: 100%; height: 100%;
-      border-radius: 8px;
-    }
 
     /* 分享提示 */
     .share-tip {
@@ -344,19 +306,19 @@
 </head>
 <body>
 
-<!-- 流星背景 -->
+<!-- 星空背景 -->
 <div class="stars" id="stars"></div>
 
 <div class="container">
 
   <!-- 封面 -->
   <div class="hero">
-    <div class="hero-emoji">🔮</div>
-    <div class="hero-title">AI 命理师<br>你的命中注定之人</div>
+    <div class="hero-emoji">🧠</div>
+    <div class="hero-title">AI 性格分析<br>深度了解真实的自己</div>
     <div class="hero-divider"></div>
-    <div class="hero-sub">AI 八字 · 情感分析 · 性格解读<br>输入生日，3秒生成你的命盘</div>
-    <div class="bagua-container">
-      <div class="bagua"></div>
+    <div class="hero-sub">基于出生日期的性格画像 · 情感模式 · 职业分析<br>输入生日，3秒生成你的专属性格报告</div>
+    <div class="element-container">
+      <div class="element-ring"></div>
     </div>
   </div>
 
@@ -366,32 +328,20 @@
     
     <div class="example-card">
       <div class="example-name">@小林 · 1995年1月</div>
-      <div class="example-bazi">
-        <div class="example-pillar"><div class="example-pillar-label">年柱</div><div class="example-pillar-val">甲戌</div></div>
-        <div class="example-pillar"><div class="example-pillar-label">月柱</div><div class="example-pillar-val">癸丑</div></div>
-        <div class="example-pillar"><div class="example-pillar-label">日柱</div><div class="example-pillar-val">丙申</div></div>
-        <div class="example-pillar"><div class="example-pillar-label">时柱</div><div class="example-pillar-val">甲午</div></div>
-      </div>
       <div class="example-text">
         🌟 性格：正直仁慈，内心温暖但不善表达<br>
-        💕 感情：近期桃花运不错，适合主动出击<br>
-        ✨ 建议：多倾听，少冲动
+        💕 情感：主动表达型，适合在关系中保持真诚<br>
+        ✨ 建议：多倾听，适当放慢节奏
       </div>
       <div class="example-tag">已帮助 2,847 人</div>
     </div>
 
     <div class="example-card">
       <div class="example-name">@阿雅 · 1998年5月</div>
-      <div class="example-bazi">
-        <div class="example-pillar"><div class="example-pillar-label">年柱</div><div class="example-pillar-val">戊寅</div></div>
-        <div class="example-pillar"><div class="example-pillar-label">月柱</div><div class="example-pillar-val">丁巳</div></div>
-        <div class="example-pillar"><div class="example-pillar-label">日柱</div><div class="example-pillar-val">壬子</div></div>
-        <div class="example-pillar"><div class="example-pillar-label">时柱</div><div class="example-pillar-val">丙午</div></div>
-      </div>
       <div class="example-text">
         🌟 性格：豁达智慧，思维开阔，富有哲思<br>
-        💕 感情：有缘分会自然出现，保持初心<br>
-        ✨ 建议：顺其自然，好事将至
+        💕 情感：自然吸引型，真挚的感情会在对的时间到来<br>
+        ✨ 建议：在持续成长中找到自己的方向
       </div>
       <div class="example-tag">已帮助 1,532 人</div>
     </div>
@@ -402,24 +352,24 @@
     <div class="features-title">✨ 我能帮你做什么</div>
     <div class="feature-grid">
       <div class="feature-item">
-        <div class="feature-icon">🧙</div>
-        <div class="feature-name">八字命盘</div>
-        <div class="feature-desc">精准排盘，分析五行</div>
+        <div class="feature-icon">🧠</div>
+        <div class="feature-name">性格解读</div>
+        <div class="feature-desc">深度了解自我特质</div>
       </div>
       <div class="feature-item">
         <div class="feature-icon">💕</div>
         <div class="feature-name">情感分析</div>
-        <div class="feature-desc">桃花运势，感情走向</div>
+        <div class="feature-desc">情感模式与关系建议</div>
       </div>
       <div class="feature-item">
-        <div class="feature-icon">🌟</div>
-        <div class="feature-name">性格解读</div>
-        <div class="feature-desc">深度了解自己</div>
+        <div class="feature-icon">💼</div>
+        <div class="feature-name">职业发展</div>
+        <div class="feature-desc">发现适合你的方向</div>
       </div>
       <div class="feature-item">
         <div class="feature-icon">📅</div>
-        <div class="feature-name">流年预测</div>
-        <div class="feature-desc">近期运势提醒</div>
+        <div class="feature-name">成长建议</div>
+        <div class="feature-desc">个性化发展规划</div>
       </div>
     </div>
   </div>
@@ -431,18 +381,18 @@
       <div class="price-amount"><small>¥</small>9.9</div>
       <div class="price-desc">完整详细版 · 永久有效</div>
       <div class="price-features">
-        <div class="price-feature">✅ <span>十年大运分析</span></div>
-        <div class="price-feature">✅ <span>详细流年预测</div>
-        <div class="price-feature">✅ <span>事业财运指导</span></div>
-        <div class="price-feature">✅ <span>婚恋感情建议</span></div>
-        <div class="price-feature">✅ <span>专属改运建议</span></div>
+        <div class="price-feature">✅ <span>深度性格分析</span></div>
+        <div class="price-feature">✅ <span>职业发展指导</div>
+        <div class="price-feature">✅ <span>情感关系分析</span></div>
+        <div class="price-feature">✅ <span>健康生活建议</span></div>
+        <div class="price-feature">✅ <span>个性化成长建议</span></div>
       </div>
     </div>
   </div>
 
   <!-- CTA -->
   <div class="cta-section">
-    <a href="./index.html" class="cta-btn">🚀 免费测一测我的命盘</a>
+    <a href="./index.html" class="cta-btn">🚀 免费分析我的性格</a>
     <div class="cta-note">点击即测 · 完全免费 · 30秒出结果</div>
     <button class="copy-btn" onclick="copyLink()">📋 复制链接分享给朋友</button>
   </div>
@@ -460,8 +410,8 @@
   <div class="share-tip">🔗 分享到小红书/朋友圈/群聊 效果更好</div>
 
   <div class="footer">
-    <div>仅供娱乐参考 · 命运掌握在自己手中</div>
-    <div style="margin-top:6px;">🔮 AI命理师 · 情感运势分析</div>
+    <div>测试结果仅供参考</div>
+    <div style="margin-top:6px;">🧠 AI性格分析 · 深度自我认知</div>
   </div>
 </div>
 
@@ -471,7 +421,7 @@
 </div>
 
 <script>
-// 生成流星
+// 生成星空
 const stars = document.getElementById('stars');
 for (let i = 0; i < 30; i++) {
   const s = document.createElement('div');
@@ -505,9 +455,9 @@ function copyLink() {
 // 页面标题动画
 document.addEventListener('visibilitychange', function() {
   if (document.hidden) {
-    document.title = '🔮 你的朋友给你发了一个命盘测算';
+    document.title = '🧠 你的朋友邀请你来测性格分析';
   } else {
-    document.title = '🔮 AI算命 - 你的命中注定之人';
+    document.title = '🧠 AI性格分析 | 深度自我认知';
   }
 });
 </script>

@@ -1,6 +1,6 @@
-# 🔮 算命软件 MVP
+# 🧠 AI 性格分析
 
-AI 对话式情感运势分析 H5
+基于出生日期的深度性格分析工具
 
 ## 快速启动
 
@@ -43,4 +43,4 @@ cd frontend && npm run dev
 - **前端**：React + Vite + TailwindCSS
 - **后端**：Node.js + Express
 - **AI**：DeepSeek (硅基流动) - ¥1/百万token
-- **八字排盘**：`lunar-lord` (npm)
+- **算法**：传统历法计算 `lunar-lord` (npm)

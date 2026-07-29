@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>AI 命理师</title>
-<meta property="og:title" content="AI 命理师 - 八字算命">
-<meta property="og:description" content="AI 八字 · 情感运势 · 性格解读 · 9.9元解锁完整报告">
+<title>AI 性格分析</title>
+<meta property="og:title" content="AI 性格分析 | 深度自我认知">
+<meta property="og:description" content="基于出生日期的深度性格分析 · 职业发展 · 情感模式 · 9.9元解锁完整报告">
 <meta property="og:image" content="skm.jpg">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="data.js"></script>
@@ -27,9 +27,9 @@ body{background:linear-gradient(135deg,#0f0c29,#302b63 50%,#24243e);min-height:1
 <body class="flex flex-col items-center justify-center px-4 py-8">
 
 <div class="text-center mb-8">
-<div class="text-5xl mb-2">🔮</div>
-<h1 class="text-3xl font-bold text-amber-200 tracking-widest mb-1">AI 命理师</h1>
-<p class="text-amber-100/60 text-sm">AI 八字 · 情感运势 · 性格解读</p>
+<div class="text-5xl mb-2">🧠</div>
+<h1 class="text-3xl font-bold text-amber-200 tracking-widest mb-1">AI 性格分析</h1>
+<p class="text-amber-100/60 text-sm">传统文化性格画像 · 深度自我认知</p>
 </div>
 
 <div class="w-full max-w-md" id="app">
@@ -47,9 +47,9 @@ body{background:linear-gradient(135deg,#0f0c29,#302b63 50%,#24243e);min-height:1
 <div><label class="block text-amber-100/80 text-sm mb-1">出生月份（阳历）</label><input id="month" type="number" placeholder="1-12" min="1" max="12" class="w-full bg-white/10 border border-amber-500/30 rounded-lg px-4 py-2.5 text-white placeholder-white/30 outline-none focus:border-amber-400" required></div>
 <div><label class="block text-amber-100/80 text-sm mb-1">出生日期（阳历）</label><input id="day" type="number" placeholder="1-31" min="1" max="31" class="w-full bg-white/10 border border-amber-500/30 rounded-lg px-4 py-2.5 text-white placeholder-white/30 outline-none focus:border-amber-400" required></div>
 </div>
-<div><label class="block text-amber-100/80 text-sm mb-1">出生时辰（可选，默认午时）</label><input id="hour" type="number" placeholder="0-23" min="0" max="23" class="w-full bg-white/10 border border-amber-500/30 rounded-lg px-4 py-2.5 text-white placeholder-white/30 outline-none focus:border-amber-400"></div>
+<div><label class="block text-amber-100/80 text-sm mb-1">出生时间（可选，默认午时）</label><input id="hour" type="number" placeholder="0-23" min="0" max="23" class="w-full bg-white/10 border border-amber-500/30 rounded-lg px-4 py-2.5 text-white placeholder-white/30 outline-none focus:border-amber-400"></div>
 <div id="error" class="bg-red-500/20 border border-red-500/40 rounded-lg px-4 py-2 text-red-200 text-sm hidden"></div>
-<button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 disabled:opacity-50 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-amber-900/40 mt-2">🚀 开始算命</button>
+<button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 disabled:opacity-50 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-amber-900/40 mt-2">🚀 开始分析</button>
 </form>
 </div>
 
@@ -59,16 +59,9 @@ body{background:linear-gradient(135deg,#0f0c29,#302b63 50%,#24243e);min-height:1
 <span class="text-amber-100/40">① 输入信息</span><span class="text-amber-300 font-bold">② 查看结果</span>
 </div>
 
-<!-- 八字命盘 -->
-<div class="glass rounded-2xl p-5 text-center">
-<div class="text-amber-100/60 text-xs mb-3">八字命盘</div>
-<div class="grid grid-cols-4 gap-2 text-center" id="baziGrid"></div>
-<div class="flex gap-1 items-end h-20 mt-2" id="wuxingBar"></div>
-</div>
-
 <!-- 免费解读 -->
 <div class="glass rounded-2xl p-6">
-<div class="flex items-center gap-2 mb-4"><span class="text-2xl">🧙</span><span class="text-amber-200 font-bold">命理师解读</span></div>
+<div class="flex items-center gap-2 mb-4"><span class="text-2xl">🧠</span><span class="text-amber-200 font-bold">AI 性格解读</span></div>
 <div id="loading" class="flex gap-2 justify-center py-4"><div class="w-3 h-3 bg-amber-400 rounded-full animate-bounce"></div><div class="w-3 h-3 bg-amber-400 rounded-full animate-bounce" style="animation-delay:.15s"></div><div class="w-3 h-3 bg-amber-400 rounded-full animate-bounce" style="animation-delay:.3s"></div></div>
 <div id="result" class="text-amber-100/90 leading-relaxed text-sm hidden"></div>
 </div>
@@ -76,9 +69,9 @@ body{background:linear-gradient(135deg,#0f0c29,#302b63 50%,#24243e);min-height:1
 <!-- 付费解锁 -->
 <div id="unlockSection" class="bg-gradient-to-r from-purple-900/40 to-amber-900/40 rounded-2xl p-5 border border-purple-500/30 text-center">
 <div class="text-2xl mb-2">✨</div>
-<div class="text-amber-200 font-bold mb-1">解锁完整分析</div>
-<div class="text-amber-100/60 text-sm mb-4">十年大运 · 流年运势 · 事业财运 · 婚恋建议<br><span class="text-amber-300 text-lg font-bold">¥9.9</span></div>
-<button onclick="startPayment()" id="payBtn" class="w-full bg-gradient-to-r from-purple-600 to-amber-600 hover:from-purple-500 hover:to-amber-500 text-white font-bold py-3 rounded-xl transition shadow-lg">🔒 付费解锁详细版</button>
+<div class="text-amber-200 font-bold mb-1">解锁完整分析报告</div>
+<div class="text-amber-100/60 text-sm mb-4">深度性格画像 · 职业发展 · 情感分析 · 健康建议<br><span class="text-amber-300 text-lg font-bold">¥9.9</span></div>
+<button onclick="startPayment()" id="payBtn" class="w-full bg-gradient-to-r from-purple-600 to-amber-600 hover:from-purple-500 hover:to-amber-500 text-white font-bold py-3 rounded-xl transition shadow-lg">🔒 解锁完整报告</button>
 </div>
 
 <!-- 支付中状态 -->
@@ -95,7 +88,7 @@ body{background:linear-gradient(135deg,#0f0c29,#302b63 50%,#24243e);min-height:1
 <!-- 完整报告区域 -->
 <div id="detailSection" class="hidden">
 <div class="glass rounded-2xl p-4">
-<div class="flex items-center gap-2 mb-3"><span class="text-xl">📊</span><span class="text-amber-200 font-bold">完整命理分析报告</span></div>
+<div class="flex items-center gap-2 mb-3"><span class="text-xl">📊</span><span class="text-amber-200 font-bold">完整性格分析报告</span></div>
 <div id="detailContent"></div>
 </div>
 </div>
@@ -175,11 +168,11 @@ body{background:linear-gradient(135deg,#0f0c29,#302b63 50%,#24243e);min-height:1
 </div>
 </div>
 
-<button onclick="reset()" class="w-full text-amber-100/40 hover:text-amber-200 py-2 text-sm transition">← 重新算命</button>
+<button onclick="reset()" class="w-full text-amber-100/40 hover:text-amber-200 py-2 text-sm transition">← 重新分析</button>
 </div>
 </div>
 
-<div class="mt-8 text-amber-100/20 text-xs text-center">仅供娱乐参考 · 命运掌握在自己手中</div>
+<div class="mt-8 text-amber-100/20 text-xs text-center">测试结果仅供参考</div>
 
 <script>
 // ============ 客服联系方式 ============
@@ -191,7 +184,7 @@ var CONTACT_WX = '';
 // 例如：var API_BASE = 'https://your-server.com/api';
 var API_BASE = '/api';
 
-// ============ 八字算法 ============
+// ============ 性格算法 ============
 var ST=['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
 var BR=['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
 var WS=['木','木','火','火','土','土','金','金','水','水'];
@@ -205,16 +198,15 @@ function gyp(y,m,d){var b=m<2||(m===2&&d<4);var a=b?y-1:y;return{stem:ST[(a-4)%1
 function gmp(y,m){var s=MS[ST[(y-4)%10]];return{stem:ST[(s+m-1)%10],branch:BR[m%12]}}
 function gb(y,m,d,h){h=h||12;var yp=gyp(y,m,d),mp=gmp(y,m),dp=gdp(sjd(y,m,d));var hb=ghb(h),hi=BR.indexOf(hb),si=(ST.indexOf(dp.stem)*2+hi)%10;var hp={stem:ST[si],branch:hb},wc={'木':0,'火':0,'土':0,'金':0,'水':0};[yp,mp,dp,hp].forEach(function(p){wc[WS[ST.indexOf(p.stem)]]++;wc[WB[p.branch]]++});return{year:yp,month:mp,day:dp,hour:hp,wuxing:wc}}
 
-// ============ 性格数据 ============
-var PER={'甲':'正直仁慈，有领导力，内心温暖但不善表达。','乙':'温柔细腻，敏感体贴，善于照顾他人感受。','丙':'热情开朗，阳光外向，行动力强但有时急躁。','丁':'内敛深情，第六感强，直觉敏锐且富有创意。','戊':'稳重踏实，诚实守信，重视承诺和安全感。','己':'细腻务实，脚踏实地，适应力强且善解人意。','庚':'果断坚韧，讲究原则，正义感强但略显固执。','辛':'精致内秀，追求完美，善于反思且品味独到。','壬':'豁达智慧，思维开阔，富有哲思且乐观积极。','癸':'柔情似水，浪漫敏感，富有同理心且直觉准。'};
-// 命理数据从 data.js 加载（PD, CR, WL, LV, HK, FS, MN）
+// ============ 性格描述数据 ============
+var PER={'甲':'正直仁慈，有领导力，内心温暖但不善表达。','乙':'温柔细腻，敏感体贴，善于照顾他人感受。','丙':'热情开朗，阳光外向，行动力强但有时急躁。','丁':'内敛深沉，洞察力强，直觉敏锐且富有创意。','戊':'稳重踏实，诚实守信，重视承诺和安全感。','己':'细腻务实，脚踏实地，适应力强且善解人意。','庚':'果断坚韧，讲究原则，正义感强但略显固执。','辛':'精致内秀，追求完美，善于反思且品味独到。','壬':'豁达智慧，思维开阔，富有哲思且乐观积极。','癸':'柔情似水，浪漫敏感，富有同理心且直觉准。'};
 
 // 生成免费版解读
-function gfree(bazi,name){
+function gPreview(bazi,name){
   var s=bazi.day.stem,n=name||'你',p=PER[s];
-  var l=['甲','丙','戊'].indexOf(s)>=0?'近期桃花运不错，容易遇到有缘人，适合主动出击。':['乙','丁','癸'].indexOf(s)>=0?'近期感情运势平缓，适合沉淀自我，有缘分会自然出现。':'近期适合多参加社交活动，扩展人际圈子。';
-  var a=['甲','庚'].indexOf(s)>=0?'多倾听，少冲动。':'保持初心，顺其自然。';
-  return '<p style="margin-bottom:8px"><b style="color:#fcd34d">🌟 性格特点：</b></p><p>'+p+'</p><p style="margin:10px 0 8px"><b style="color:#fcd34d">💕 近期情感运势：</b></p><p>'+l+'</p><p style="margin:10px 0 8px"><b style="color:#fcd34d">✨ 命理建议：</b></p><p>'+a+'</p><p style="margin-top:12px;color:rgba(232,213,183,.4);font-size:12px">—— 免费基础版 · 付费解锁详细分析 ——</p>';
+  var l=['甲','丙','戊'].indexOf(s)>=0?'在感情中倾向于主动表达，容易吸引志同道合的伴侣，建议在关系中保持耐心和真诚。':['乙','丁','癸'].indexOf(s)>=0?'情感细腻深沉，适合慢慢了解再建立关系，真挚的感情会在对的时间自然到来。':'人际交往能力不错，适合多参与社交活动，拓展社交圈，机会往往出现在自然互动中。';
+  var a=['甲','庚'].indexOf(s)>=0?'多倾听他人的想法和建议，适当放慢节奏。':'保持初心，在持续成长中找到自己的方向。';
+  return '<p style="margin-bottom:8px"><b style="color:#fcd34d">🌟 性格特点：</b></p><p>'+p+'</p><p style="margin:10px 0 8px"><b style="color:#fcd34d">💕 情感模式：</b></p><p>'+l+'</p><p style="margin:10px 0 8px"><b style="color:#fcd34d">✨ 成长建议：</b></p><p>'+a+'</p><p style="margin-top:12px;color:rgba(232,213,183,.4);font-size:12px">—— 免费基础版 · 解锁查看完整分析 ——</p>';
 }
 
 // ============ DOM 引用 ============
@@ -222,14 +214,6 @@ var form=document.getElementById('form'),step1=document.getElementById('step1'),
 
 function showErr(m){err.textContent=m;err.classList.remove('hidden')}
 function hideErr(){err.classList.add('hidden')}
-
-function renderBazi(b){
-  var data=[{l:'年柱',v:b.year.stem+b.year.branch,w:WS[ST.indexOf(b.year.stem)]},{l:'月柱',v:b.month.stem+b.month.branch,w:WS[ST.indexOf(b.month.stem)]},{l:'日柱',v:b.day.stem+b.day.branch,w:WS[ST.indexOf(b.day.stem)]},{l:'时柱',v:b.hour.stem+b.hour.branch,w:WS[ST.indexOf(b.hour.stem)]}];
-  document.getElementById('baziGrid').innerHTML=data.map(function(p){return'<div class="bg-white/5 rounded-xl p-2"><div class="text-amber-100/40 text-xs">'+p.l+'</div><div class="text-amber-200 font-bold text-lg my-1">'+p.v+'</div><div class="text-amber-100/30 text-xs">'+p.w+'</div></div>'}).join('');
-  var t=Object.values(b.wuxing).reduce(function(s,v){return s+v},0);
-  var c={'木':'bg-green-500','火':'bg-red-500','土':'bg-yellow-600','金':'bg-gray-300','水':'bg-blue-500'};
-  document.getElementById('wuxingBar').innerHTML=Object.entries(b.wuxing).map(function(e){return'<div class="flex flex-col items-center flex-1"><div class="text-xs mb-1">'+e[0]+':'+e[1]+'</div><div class="w-full rounded-t '+c[e[0]]+' opacity-80" style="height:'+Math.max(e[1]/t*70,6)+'px"></div></div>'}).join('');
-}
 
 // ============ 第1步：提交表单 ============
 var currentBazi=null,currentName='',currentYear=0,currentMonth=0,currentDay=0,currentHour=12;
@@ -242,12 +226,11 @@ form.addEventListener('submit',function(e){
   currentDay=+document.getElementById('day').value;
   currentHour=+document.getElementById('hour').value||12;
   if(!currentYear||!currentMonth||!currentDay){showErr('请填写完整的出生日期');return}
-  btn.disabled=true;btn.textContent='命理师正在解读...';
+  btn.disabled=true;btn.textContent='AI 正在分析...';
   currentBazi=gb(currentYear,currentMonth,currentDay,currentHour);
-  renderBazi(currentBazi);
   step1.classList.add('hidden');step2.classList.remove('hidden');
   sessionStorage.setItem('fortune_input',JSON.stringify({name:currentName,year:currentYear,month:currentMonth,day:currentDay,hour:currentHour}));
-  setTimeout(function(){ld.classList.add('hidden');res.innerHTML=gfree(currentBazi,currentName);res.classList.remove('hidden');btn.disabled=false;btn.textContent='🚀 开始算命'},1500);
+  setTimeout(function(){ld.classList.add('hidden');res.innerHTML=gPreview(currentBazi,currentName);res.classList.remove('hidden');btn.disabled=false;btn.textContent='🚀 开始分析'},1500);
 });
 
 function reset(){
@@ -276,14 +259,14 @@ async function startPayment(){
       body:JSON.stringify({name:currentName,year:currentYear,month:currentMonth,day:currentDay,hour:currentHour})
     });
     var d=await r.json();
-    if(d.error){alert('创建订单失败：'+d.error);btn.disabled=false;btn.textContent='🔒 付费解锁详细版';return}
+    if(d.error){alert('创建订单失败：'+d.error);btn.disabled=false;btn.textContent='🔒 解锁完整报告';return}
 
     currentOrderId=d.orderId;
     sessionStorage.setItem('fortune_orderId',currentOrderId);
     showPaymentModal(d);
   }catch(e){
     alert('网络错误：'+e.message);
-    btn.disabled=false;btn.textContent='🔒 付费解锁详细版';
+    btn.disabled=false;btn.textContent='🔒 解锁完整报告';
   }
 }
 
@@ -329,7 +312,7 @@ function showQrCode(elementId, url){
 function closePaymentModal(){
   document.getElementById('paymentModal').classList.add('hidden');
   document.getElementById('payBtn').disabled=false;
-  document.getElementById('payBtn').textContent='🔒 付费解锁详细版';
+  document.getElementById('payBtn').textContent='🔒 解锁完整报告';
   clearPolling();
 }
 
@@ -351,7 +334,7 @@ async function checkPayment(){
 function cancelPayment(){
   document.getElementById('paymentModal').classList.add('hidden');
   document.getElementById('payBtn').disabled=false;
-  document.getElementById('payBtn').textContent='🔒 付费解锁详细版';
+  document.getElementById('payBtn').textContent='🔒 解锁完整报告';
   clearPolling();
 }
 
@@ -396,7 +379,7 @@ async function verifyAndShowReport(){
     document.getElementById('payVerifying').classList.add('hidden');
     document.getElementById('payFailed').classList.remove('hidden');
     updateContact();
-    document.getElementById('payFailedMsg').textContent='网络异常，请检查网络后重新点击“我已完成付款”';
+    document.getElementById('payFailedMsg').textContent='网络异常，请检查网络后重新点击"我已完成付款"';
   }
 }
 
@@ -439,7 +422,7 @@ async function showDetailedReport(){
   document.getElementById('unlockSection').classList.add('hidden');
   document.getElementById('payingSection').classList.add('hidden');
   document.getElementById('detailSection').classList.remove('hidden');
-  document.getElementById('detailContent').innerHTML='<div class="text-center py-8"><div class="text-2xl mb-3 spin">🔮</div><p class="text-amber-200">正在生成完整报告...</p></div>';
+  document.getElementById('detailContent').innerHTML='<div class="text-center py-8"><div class="text-2xl mb-3 spin">⏳</div><p class="text-amber-200">正在生成完整报告...</p></div>';
 
   // 先尝试后端API获取AI增强报告
   var aiData=null;
@@ -461,118 +444,86 @@ async function showDetailedReport(){
   sessionStorage.setItem('fortune_report_'+currentOrderId,html);
 }
 
-// ============ 完整报告生成（细化版）============
+// ============ 完整报告生成 ============
 function generateFullReport(bazi,name,y,m,d,h,aiData){
-  var s=bazi.day.stem,br=bazi.day.branch,si=ST.indexOf(s),bi=BR.indexOf(br),w=bazi.wuxing,dw=WS[si],sc=w[dw],str=sc>=2;
-  var ym=str?{m:'官杀、食伤、财星',a:'比劫'}:{m:'印星、比劫',a:'官杀、财星'};
-
-  // 五行警告
-  var warn='';
-  if(w['木']<1)warn+='<p style="color:#f87171;margin:4px 0">⚠️ 木弱：肝胆功能偏弱，宜养肝护眼，少熬夜多运动。</p>';
-  if(w['火']<1)warn+='<p style="color:#f87171;margin:4px 0">⚠️ 火弱：心血管功能需注意，不宜熬夜和剧烈运动。</p>';
-  if(w['土']<1)warn+='<p style="color:#f87171;margin:4px 0">⚠️ 土弱：脾胃功能偏弱，饮食需规律，少吃生冷。</p>';
-  if(w['金']<1)warn+='<p style="color:#f87171;margin:4px 0">⚠️ 金弱：呼吸系统需注意，少抽烟，注意肺部健康。</p>';
-  if(w['水']<1)warn+='<p style="color:#f87171;margin:4px 0">⚠️ 水弱：肾气不足，宜保养肾脏，多喝水少熬夜。</p>';
-
-  // 日柱性格深度
+  var s=bazi.day.stem;
   var pd=PD[s],cr=CR[s],wl=WL[s],lv=LV[s],hk=HK[s],fs=FS[s];
 
-  // 大运
-  var cur=2026-y,dS=cur<=20?20:cur<=30?30:40;
-  var dy='';
-  for(var i=0;i<6;i++){var a=dS+i*10;if(a>80)break;dy+='<span class="tag">'+a+'-'+Math.min(a+9,80)+'岁 '+ST[(si+i+1)%10]+BR[(bi+i+1)%12]+'（'+WS[(si+i+1)%10]+'运）</span> '}
-
-  // 流月
-  var ml='';
-  for(var i=0;i<12;i++){ml+='<div class="r"><span class="l">'+(i+1)+'月：</span><span>'+MN[i]+'</span></div>'}
-
   // AI 增强内容
-  var aiOverall=aiData&&aiData.overall?'<div class="rc" style="border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.06)"><h3 style="color:#fbbf24">🤖 AI 命理总评</h3><p>'+aiData.overall+'</p></div>':'';
+  var aiOverall=aiData&&aiData.overall?'<div class="rc" style="border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.06)"><h3 style="color:#fbbf24">🤖 AI 性格总评</h3><p>'+aiData.overall+'</p></div>':'';
   var aiCareer=aiData&&aiData.career?'<p style="margin-top:8px;color:rgba(232,213,183,.7);font-style:italic">💡 AI补充：'+aiData.career+'</p>':'';
   var aiWealth=aiData&&aiData.wealth?'<p style="margin-top:8px;color:rgba(232,213,183,.7);font-style:italic">💡 AI补充：'+aiData.wealth+'</p>':'';
   var aiLove=aiData&&aiData.love?'<p style="margin-top:8px;color:rgba(232,213,183,.7);font-style:italic">💡 AI补充：'+aiData.love+'</p>':'';
   var aiHealth=aiData&&aiData.health?'<p style="margin-top:8px;color:rgba(232,213,183,.7);font-style:italic">💡 AI补充：'+aiData.health+'</p>':'';
 
+  // 月度建议
+  var ml='';
+  for(var i=0;i<12;i++){ml+='<div class="r"><span class="l">'+(i+1)+'月：</span><span>'+MN[i]+'</span></div>'}
+
   return '<!-- 报告头部 -->'
     +'<div style="text-align:center;padding:12px 0 8px;border-bottom:1px solid rgba(251,191,36,.2);margin-bottom:16px">'
-    +'<div style="color:#fcd34d;font-size:18px;font-weight:700;margin-bottom:4px">'+name+' · 完整命理分析报告</div>'
+    +'<div style="color:#fcd34d;font-size:18px;font-weight:700;margin-bottom:4px">'+name+' · 完整性格分析报告</div>'
     +'<div style="color:rgba(232,213,183,.5);font-size:12px">订单号：'+currentOrderId+' | '+y+'年'+m+'月'+d+'日'+h+'时</div>'
     +'</div>'
 
     // AI 总评
     +aiOverall
 
-    // 一、八字格局
-    +'<div class="rc"><h3>📋 一、八字命盘格局</h3>'
-    +'<div class="r"><span class="l">八字：</span><span style="font-size:16px;color:#fcd34d;font-weight:700">'+bazi.year.stem+bazi.year.branch+' '+bazi.month.stem+bazi.month.branch+' '+s+br+' '+bazi.hour.stem+bazi.hour.branch+'</span></div>'
-    +'<div class="r"><span class="l">日主：</span><span>'+s+'（'+dw+'命）</span></div>'
-    +'<div class="r"><span class="l">强弱：</span><span style="color:'+(str?'#fbbf24':'#60a5fa')+'">'+(str?'身强':'身弱')+'（日主在八字中占 '+sc+' 个）</span></div>'
-    +'<div class="r"><span class="l">用神：</span><span style="color:#4ade80">'+ym.m+'</span></div>'
-    +'<div class="r"><span class="l">忌神：</span><span style="color:#f87171">'+ym.a+'</span></div>'
-    +'<div class="r"><span class="l">五行：</span><span>木'+w['木']+' 火'+w['火']+' 土'+w['土']+' 金'+w['金']+' 水'+w['水']+'</span></div>'
-    +warn
-    +'</div>'
-
-    // 二、性格深度
-    +'<div class="rc"><h3>🧠 二、性格深度分析</h3>'
-    +'<p><b style="color:#fcd34d">日主特质：</b>'+pd.o+'</p>'
-    +'<p><b style="color:#fcd34d">外表印象：</b>'+pd.o+'</p>'
+    // 一、性格深度分析
+    +'<div class="rc"><h3>🧠 一、性格深度分析</h3>'
+    +'<p><b style="color:#fcd34d">核心特质：</b>'+pd.o+'</p>'
+    +'<p><b style="color:#fcd34d">外在表现：</b>'+pd.o+'</p>'
     +'<p><b style="color:#fcd34d">内心世界：</b>'+pd.i+'</p>'
     +'<p><b style="color:#4ade80">核心优势：</b>'+pd.s+'</p>'
-    +'<p><b style="color:#f87171">需注意：</b>'+pd.w+'</p>'
+    +'<p><b style="color:#f87171">成长空间：</b>'+pd.w+'</p>'
     +'</div>'
 
-    // 三、事业运势
-    +'<div class="rc"><h3>💼 三、事业运势</h3>'
+    // 二、职业发展分析
+    +'<div class="rc"><h3>💼 二、职业发展分析</h3>'
     +'<p>'+cr.o+'</p>'
-    +'<p style="margin-top:6px"><b style="color:#fcd34d">有利方位：</b>'+cr.dir+'</p>'
-    +'<p><b style="color:#fcd34d">适合行业：</b>'+cr.ind+'</p>'
-    +'<p><b style="color:#fcd34d">职业规划：</b></p><p>'+cr.plan+'</p>'
+    +'<p style="margin-top:6px"><b style="color:#fcd34d">发展方向：</b>'+cr.dir+'</p>'
+    +'<p><b style="color:#fcd34d">适合领域：</b>'+cr.ind+'</p>'
+    +'<p><b style="color:#fcd34d">发展规划：</b></p><p>'+cr.plan+'</p>'
     +aiCareer
     +'</div>'
 
-    // 四、财运分析
-    +'<div class="rc"><h3>💰 四、财运分析</h3>'
+    // 三、个人成长分析
+    +'<div class="rc"><h3>📈 三、个人成长分析</h3>'
     +'<p>'+wl.o+'</p>'
-    +'<p style="margin-top:6px"><b style="color:#4ade80">理财建议：</b>'+wl.t+'</p>'
+    +'<p style="margin-top:6px"><b style="color:#4ade80">成长建议：</b>'+wl.t+'</p>'
     +aiWealth
     +'</div>'
 
-    // 五、感情婚姻
-    +'<div class="rc"><h3>💕 五、感情婚姻</h3>'
+    // 四、情感关系分析
+    +'<div class="rc"><h3>💕 四、情感关系分析</h3>'
     +'<p>'+lv.o+'</p>'
-    +'<p style="margin-top:6px"><b style="color:#f9a8d4">理想伴侣：</b>'+lv.m+'</p>'
+    +'<p style="margin-top:6px"><b style="color:#f9a8d4">契合类型：</b>'+lv.m+'</p>'
     +aiLove
     +'</div>'
 
-    // 六、健康养生
-    +'<div class="rc"><h3>🏥 六、健康养生</h3>'
+    // 五、健康生活建议
+    +'<div class="rc"><h3>🏥 五、健康生活建议</h3>'
     +hk
     +aiHealth
     +'</div>'
 
-    // 七、十年大运
-    +'<div class="rc"><h3>📅 七、十年大运</h3>'
-    +'<div style="display:flex;flex-wrap:wrap;gap:4px">'+dy+'</div>'
+    // 六、个性化建议
+    +'<div class="rc"><h3>💡 六、个性化建议</h3>'
+    +'<p><b style="color:#fcd34d">发展方向：</b>'+fs.pos+'</p>'
+    +'<p><b style="color:#fcd34d">风格建议：</b>'+fs.col+'</p>'
+    +'<p><b style="color:#fcd34d">工作节奏：</b>'+fs.num+'</p>'
+    +'<p><b style="color:#fcd34d">形象建议：</b>'+fs.wear+'</p>'
+    +'<p><b style="color:#fcd34d">环境建议：</b>'+fs.bed+'</p>'
     +'</div>'
 
-    // 八、流月运势
-    +'<div class="rc"><h3>🌙 八、2026年流月运势</h3>'
+    // 七、月度发展建议
+    +'<div class="rc"><h3>📅 七、月度发展建议</h3>'
     +ml
-    +'</div>'
-
-    // 九、风水开运
-    +'<div class="rc"><h3>🍀 九、风水开运指南</h3>'
-    +'<p><b style="color:#fcd34d">吉利方位：</b>'+fs.pos+'</p>'
-    +'<p><b style="color:#fcd34d">幸运颜色：</b>'+fs.col+'</p>'
-    +'<p><b style="color:#fcd34d">幸运数字：</b>'+fs.num+'</p>'
-    +'<p><b style="color:#fcd34d">开运饰品：</b>'+fs.wear+'</p>'
-    +'<p><b style="color:#fcd34d">床位朝向：</b>'+fs.bed+'</p>'
     +'</div>'
 
     // 报告尾部
     +'<div style="text-align:center;padding:16px 0;color:rgba(232,213,183,.4);font-size:12px;border-top:1px solid rgba(251,191,36,.12);margin-top:12px">'
-    +'仅供娱乐参考 · 命运掌握在自己手中<br>生成时间：'+new Date().toLocaleString()+'</div>';
+    +'测试结果仅供参考<br>生成时间：'+new Date().toLocaleString()+'</div>';
 }
 
 // ============ 复制链接 ============
@@ -622,4 +573,3 @@ window.addEventListener('load',function(){
 
 </body>
 </html>
-
